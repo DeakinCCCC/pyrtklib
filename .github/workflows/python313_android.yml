@@ -32,9 +32,10 @@ jobs:
       - name: Build for Android
         env:
           CIBW_PLATFORM: android
+          CIBW_ARCHS: arm64_v8a
           CIBW_BUILD_FRONTEND: build
           # 构建特定的 Python 版本和 Android 架构
-          CIBW_BUILD: "cp313-android_*"
+          CIBW_BUILD: "cp313-android*"
           # 确保 API 级别足够高（如果 repair 命令添加库）
           ANDROID_API_LEVEL: 24
           # 配置测试
