@@ -53,8 +53,8 @@ jobs:
           # 配置测试
           #CIBW_TEST_COMMAND: "python -m pytest {project}/tests -v"
           #CIBW_TEST_RUNTIME: "--managed maxVersion"
-          CFLAGS: "-I${ANDROID_NDK_HOME}/sysroot/usr/include"
-          CXXFLAGS: "-I${ANDROID_NDK_HOME}/sysroot/usr/include -std=c++14"
+          CFLAGS: "-I$ANDROID_NDK_HOME/sysroot/usr/include"
+          CXXFLAGS: "-I$ANDROID_NDK_HOME/sysroot/usr/include -std=c++14"
         run: cibuildwheel --platform android --output-dir wheelhouse
     
       - name: Upload artifacts
