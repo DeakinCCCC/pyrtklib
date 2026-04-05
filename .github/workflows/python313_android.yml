@@ -1,0 +1,50 @@
+name: Build Android wheels on Linux
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_android_wheels:
+    name: Build Android wheels
+    runs-on: ubuntu-24.04 # Linux x86_64，支持嵌套虚拟化以运行模拟器测试
+    steps:
+      - uses: actions/checkout@v4
+    
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+    
+      - name: Install cibuildwheel and build tools
+        run: pip install cibuildwheel build
+        
+      - name: Ensure required commands are available
+        run: |
+          which curl
+          # 检查 Java，或设置 JAVA_HOME
+          which java || echo "JAVA_HOME=$JAVA_HOME"
+      
+#      - name: Set up Android SDK and NDK
+#        uses: android-actions/setup-android@v3
+#        with:
+#          ndk-version: '25c' # 指定一个 NDK 版本
+    
+      - name: Build for Android
+        env:
+          CIBW_PLATFORM: android
+          CIBW_BUILD_FRONTEND: build
+          # 构建特定的 Python 版本和 Android 架构
+          CIBW_BUILD: "cp313-android_*"
+          # 确保 API 级别足够高（如果 repair 命令添加库）
+          ANDROID_API_LEVEL: 24
+          # 配置测试
+          #CIBW_TEST_COMMAND: "python -m pytest {project}/tests -v"
+          #CIBW_TEST_RUNTIME: "--managed maxVersion"
+        run: cibuildwheel --platform android --output-dir wheelhouse
+    
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: android-wheels-linux
+          path: ./wheelhouse/*.whl
+          
