@@ -23,6 +23,12 @@ jobs:
           which curl
           # 检查 Java，或设置 JAVA_HOME
           which java || echo "JAVA_HOME=$JAVA_HOME"
+
+      - name: install python3-dev
+        run: |
+          sudo apt-get update
+          sudo apt-get install python3-dev
+
       
 #      - name: Set up Android SDK and NDK
 #        uses: android-actions/setup-android@v3
